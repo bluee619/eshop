@@ -1,0 +1,169 @@
+@CHARSET "UTF-8";
+
+	.sidebar1{
+		margin-top: 20px;
+	}
+
+	.sidebar2{
+		margin-top: 10px;
+	}
+	
+	.sidebar3{
+		margin-top: 2px;
+	}
+	
+	.sidebarleft{
+		margin-left: 10px;
+	}
+	
+	.sidebarright{
+		margin-right: 10px;
+	}
+	
+	.sidebarbot{
+		margin-bottom: 10px;
+	}
+	
+	.bground{
+		background: url("../images/tlosklepn.jpg");
+		opacity: 0.8;	
+	}
+	
+	.bground2{
+		background: url("../images/tlo2.jpg");
+	}
+	
+	.opa{
+		opacity: 0.75;
+	}
+	.navbar {
+		margin-bottom: 0;
+		background-color: #2A0A12;
+		z-index: 9999;
+		border: 0;
+		font-size: 12px !important;
+		line-height: 1.42857143 !important;
+		letter-spacing: 4px;
+		border-radius: 0;
+		font-family: Montserrat, sans-serif;
+	}
+	.fon{
+		font-family: Didot, sans-serif;
+		font-size: 15px;
+		font-style: italic;
+	}
+	   
+	.navbar li a, .navbar .navbar-brand {
+		color: #fff !important;
+	}
+			 
+	.navbar-nav li a:hover, .navbar-nav li.active a {
+		color: #2A0A12 !important;
+		background-color: #fff !important;
+	}
+			  
+	.navbar-default .navbar-toggle {
+		border-color: transparent;
+		color: #fff !important;
+	}
+	.jumbotron{
+		padding: 100px 25px;
+		font-family: Montserrat, sans-serif;
+		color: "black";
+	}
+	
+	.textedit{
+		color: #fff;
+		font-family: Montserrat, sans-serif;
+		font-size: 12px !important;
+	}
+	
+	.backgroundedit{
+		background-color: #2A0A12;
+	}
+	
+	.totop{
+		font-family: Montserrat, sans-serif;
+		font-size: 20px;
+		margin-bottom: 1px;
+		text-transform: uppercase;
+	}
+	
+	.adv{
+		font-family: Montserrat, sans-serif;
+		font-size: 12px;
+		margin-top: 5px;
+		margin-bottom: 1px;
+	}
+	
+	.linkopacity{
+		opacity:0.75;
+	}
+	.linkopacity:hover{
+		opacity:1;
+	}
+		
+	.wellcart{
+		background-color: rgba(0, 0, 0, 0);
+		text-align: center;
+	}
+	
+	.header{
+		font-size: 30px;
+		font-family: "Lato", serif;
+		text-transform: uppercase;
+		color: #303030;
+		font-weight: 600;
+		margin-bottom: 30px;
+	}
+	
+	.fontedit1 {
+		font-size: 20px;
+		font-family: "Lato", serif;
+		color: #303030;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+			
+	.fontedit3{
+		font-size: 20px;
+		font-family: "Lato", serif;
+		color: #303030;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+	
+	.text1{
+		font-size: 25px;
+		font-family: "Cutive Mono", sans-serif;
+		font-weight: 800;
+		margin-bottom: 10px;
+		margin-left: 130px;
+	}
+	
+	.logo1{
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.form2{
+		display: block;
+	}
+				
+	.myform{
+		display: inline-block;
+		text-align: center;
+	}
+	
+	.wellcart{
+		background-color: rgba(0, 0, 0, 0);
+		text-align: center;
+	}
+	
+	#border{
+		border-bottom: 1px solid;
+		border-color: #fff;
+		
+	}
+	
+	

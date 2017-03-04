@@ -1,0 +1,5 @@
+Hello ${nameTo},
+
+You have just bought: ${itemName} from ${sellerName}.
+Cost: ${itemCost}
+Account number: ${sellerAccNr}

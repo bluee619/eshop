@@ -20,10 +20,10 @@ import com.shop.models.Item;
 public class ItemServiceImpl implements ItemService {
 	
 	@Autowired
-	ItemDao itemDao;
+	private ItemDao itemDao;
 	
 	@Autowired
-	EmailSender emailSender;
+	private EmailSender emailSender;
 	
 	@Override
 	@Transactional(readOnly=true)

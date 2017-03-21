@@ -19,41 +19,34 @@ import com.shop.service.ItemService;
 public class MainController {
 
 	@Autowired
-	ItemService itemService;
+	private ItemService itemService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {
-		ModelAndView model = new ModelAndView("redirect:/main");
-		return model;
+		return new ModelAndView("redirect:/main");
 	}
 
 	@RequestMapping(value = "/thanks", method = RequestMethod.GET)
-	public String thanks() {
-		return "thanks";
+	public ModelAndView thanks() {
+		return new ModelAndView("thanks");
 	}
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public ModelAndView mainsite() {
-		ModelAndView model = new ModelAndView("mainsite");
-		
+	public ModelAndView mainsite() {		
 		Optional<List<Item>> fourRandomItems = itemService.getRandom(4);
-		
 		List<Item> items = fourRandomItems.isPresent() ? fourRandomItems.get() : Collections.emptyList();
-		
-		model.addObject("itemList", items);
-		return model;
+		return new ModelAndView("mainsite")
+				.addObject("itemList", items);
 	}
 	
 	@RequestMapping(value = "/loginerror", method = RequestMethod.GET)
 	public ModelAndView loginerror(){
-		ModelAndView model = new ModelAndView("loginerrorpage");
-		return model;
+		return new ModelAndView("loginerrorpage");
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView noaccess(){
-		ModelAndView model = new ModelAndView("noaccess");
-		return model;
+		return new ModelAndView("noaccess");
 	}
 
 }

@@ -32,10 +32,10 @@ import com.shop.validation.ItemNameValidator;
 public class ItemController {
 	
 	@Autowired
-	ItemService itemService;
+	private ItemService itemService;
 
 	@Autowired
-	ClientService clientService;
+	private ClientService clientService;
 	
 	private final ItemNameValidator itemNameValidator;
 	
@@ -51,33 +51,29 @@ public class ItemController {
 	
 	@RequestMapping(value = "/additem", method = RequestMethod.GET)
 	public ModelAndView additem() {
-		ModelAndView model = new ModelAndView("additem");
-		model.addObject("item", new Item());
-		return model;
+		return new ModelAndView("additem")
+				.addObject("item", new Item());
 	}
 	
 	@RequestMapping(value = "/additem", method = RequestMethod.POST)
-	public String additem_post(@Valid @ModelAttribute("item") Item item, BindingResult result, Principal principal) throws IOException {
+	public ModelAndView additem_post(@Valid @ModelAttribute("item") Item item, BindingResult result, Principal principal) throws IOException {
 		if (result.hasErrors()) {
-			return "additem";
+			return new ModelAndView("additem");
 		}
-
 		itemService.addItem(item, new Date(), clientService.getUserByLogin(principal.getName()));
-		
-		return "redirect:/thanks";
+		return new ModelAndView("redirect:/thanks");
 	}
-	////////////////////////////////////////
+	
 	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
 	public ModelAndView itempage(@PathVariable("id") int id) {
-		ModelAndView model = new ModelAndView("itempage");
 		Optional<Item> optItem = itemService.getbyId(id);
 		Item item = optItem.isPresent() ? optItem.get() : new Item();
-		model.addObject("item", item);
-		return model;
+		return new ModelAndView("itempage")
+				.addObject("item", item);
 	}
 	
 	@RequestMapping(value = "/addToCart/{id}", method = RequestMethod.GET)
-	public String addItemToCart(@PathVariable("id") int id, HttpServletRequest request) {
+	public ModelAndView addItemToCart(@PathVariable("id") int id, HttpServletRequest request) {
 		Cart cart;
 		if (request.getSession().getAttribute("cart")==null){
 			cart = new Cart();
@@ -92,52 +88,43 @@ public class ItemController {
 				request.getSession().setAttribute("cart", cart);
 			}
 		}
-		return "redirect:/cart";
+		return new ModelAndView("redirect:/cart");
 	}
 	
 	@RequestMapping(value = "/deleteFromCart/{id}")
-	public String deleteItemFromCart(@PathVariable("id") int id, HttpServletRequest request){
+	public ModelAndView deleteItemFromCart(@PathVariable("id") int id, HttpServletRequest request){
 		Cart cart = (Cart) request.getSession().getAttribute("cart");
 		Optional<Item> optItem = itemService.getbyId(id);
 		if(optItem.isPresent()){
 			cart.deleteItem(optItem.get());
 		}
-		return "redirect:/cart";	
+		return new ModelAndView("redirect:/cart");	
 	}
 	
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public ModelAndView cart(HttpServletRequest request){
-		ModelAndView model = new ModelAndView("cart");
-		return model;
+		return new ModelAndView("cart");
 	}
 	
 	@RequestMapping(value = "/search/{category}", method = RequestMethod.GET)
 	public ModelAndView searchByCategory(@PathVariable("category") String category){
-		ModelAndView model = new ModelAndView("itemsfound");
-		
 		Optional<List<Item>> itemsFound = itemService.getAllByCategory(category);
-		
 		List<Item> items = itemsFound.isPresent() ? itemsFound.get() : Collections.emptyList();
-
-		model.addObject("itemsList", items);
-		return model;
+		return new ModelAndView("itemsfound")
+				.addObject("itemsList", items);
 	}
 	
 	@RequestMapping(value = "/itemsfromseller/{sellerId}", method = RequestMethod.GET)
 	public ModelAndView searchBySeller(@PathVariable("sellerId") int sellerId){
-		ModelAndView model = new ModelAndView("itemsfound");
 		Optional<List<Item>> itemsFound = itemService.getAllBySeller(sellerId);
-		
 		List<Item> items = itemsFound.isPresent() ? itemsFound.get() : Collections.emptyList();
-		model.addObject("itemsList", items);
-		return model;
+		return new ModelAndView("itemsfound")
+				.addObject("itemsList", items);
 	}
 	
 	@RequestMapping(value = "/searcher", method = RequestMethod.POST)
 	public ModelAndView mainsiteSearcher(@ModelAttribute("itemFilter") ItemFilter itemFilter, BindingResult result) {
-		ModelAndView model = new ModelAndView("itemsfound");
 		Optional<List<Item>> itemsFound;
-		
 		if((itemFilter.getCategory()==null || itemFilter.getCategory().equals("ALL")) && itemFilter.getName().equals("")){
 			itemsFound = itemService.getAll();
 		}
@@ -150,42 +137,36 @@ public class ItemController {
 		else{
 			itemsFound = itemService.getItemsByNameAndCategory(itemFilter.getName(), itemFilter.getCategory());
 		}
-			
 		List<Item> items = itemsFound.isPresent() ? itemsFound.get() : Collections.emptyList();
-		model.addObject("itemsList", items);
-
-		return model;
+		return new ModelAndView("itemsfound")
+				.addObject("itemsList", items);
 	}
 	
 	@RequestMapping(value = "/buyitem/{id}", method = RequestMethod.GET)
 	public ModelAndView buyItem(@PathVariable("id") int id, Principal principal) {
-		ModelAndView model = new ModelAndView("redirect:/thanks");
 		itemService.buyItem(itemService.getbyId(id).get(), clientService.getUserByLogin(principal.getName()));
-		return model;
+		return new ModelAndView("redirect:/thanks");
 	}
 	
 	@RequestMapping(value = "/buycart", method = RequestMethod.GET)
 	public ModelAndView buyCart(Principal principal, HttpServletRequest request) {
-		ModelAndView model = new ModelAndView("thanks");
 		Cart cart = (Cart) request.getSession().getAttribute("cart");
 		itemService.buyCart(cart.getItemsInCart(), clientService.getUserByLogin(principal.getName()));
-		return model;
+		return new ModelAndView("thanks");
 	}
 	
 	@RequestMapping(value = "/myitems", method = RequestMethod.GET)
 	public ModelAndView myItems(Principal principal){
-		ModelAndView model = new ModelAndView("myitems");
 		Optional<List<Item>> itemsFound = itemService.getItemsOnSale(principal.getName());
 		List<Item> items = itemsFound.isPresent() ? itemsFound.get() : Collections.emptyList();
-		model.addObject("itemsList", items);
-		return model;
+		return new ModelAndView("myitems")
+				.addObject("itemsList", items);
 	}
 	
 	@RequestMapping(value = "/myitems/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView myItemsDelete(@PathVariable("id") int id, Principal principal){
-		ModelAndView model = new ModelAndView("redirect:/thanks");
 		itemService.deleteItem(id);
-		return model;
+		return new ModelAndView("redirect:/thanks");
 	}
 }
 

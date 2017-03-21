@@ -28,7 +28,7 @@ import com.shop.validation.RecaptchaFormValidator;
 public class UserController {
 
 	@Autowired
-	ClientService clientService;
+	private ClientService clientService;
 	
 	private final RecaptchaFormValidator recaptchaFormValidator;
 	private final PasswordValidator passwordValidator;
@@ -58,68 +58,53 @@ public class UserController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView register() {
-		ModelAndView model = new ModelAndView("reg");
-		model.addObject("client", new Client());
-		return model;
+		return new ModelAndView("reg")
+				.addObject("client", new Client());
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String postRegistration(@Valid @ModelAttribute("client") Client client, BindingResult result) throws Exception{
+	public ModelAndView postRegistration(@Valid @ModelAttribute("client") Client client, BindingResult result) throws Exception{
 		if (result.hasErrors()) {
-			return "reg";
+			return new ModelAndView("reg");
 		}
 		clientService.createAccount(client);
-		return "redirect:/thanks";
+		return new ModelAndView("redirect:/thanks");
 	}
 	
 	@RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
 	public ModelAndView user(@PathVariable("login") String login){
-		ModelAndView model = new ModelAndView("userpage");
-		Client client = clientService.getUserByLogin(login);
-		model.addObject("client", client);
-		return model;
+		return new ModelAndView("userpage")
+				.addObject("client", clientService.getUserByLogin(login));
 	}
 	
 	@RequestMapping(value = "/user/edit/password/{login}", method = RequestMethod.GET)
 	public ModelAndView changePassword(@PathVariable("login") String login, Principal principal){
-		ModelAndView model;
-		if(principal.getName().equals(login))
-			model = new ModelAndView("changepassword");
-		else
-			model = new ModelAndView("noaccess");
-		
-		return model;	
+		return principal.getName().equals(login) ? new ModelAndView("changepassword") : new ModelAndView("noaccess");
 	}
 	
 	@RequestMapping(value = "/user/edit/password/{login}", method = RequestMethod.POST)
-	public String changePasswordPost(@Valid @ModelAttribute("password") Password password, BindingResult result) throws Exception{
+	public ModelAndView changePasswordPost(@Valid @ModelAttribute("password") Password password, BindingResult result) throws Exception{
 		if (result.hasErrors()) {
-			return "changepassword";
+			return new ModelAndView("changepassword");
 		}
 		clientService.changePassword(password.getLogin(), password.getPassword());
-		return "redirect:/thanks";
+		return new ModelAndView("redirect:/thanks");
 	}
 	
 	@RequestMapping(value = "/user/edit/personal/address/{login}", method = RequestMethod.GET)
 	public ModelAndView editPersonalAddress(@PathVariable("login") String login, Principal principal){
-		ModelAndView model;
-		if(principal.getName().equals(login))
-			model = new ModelAndView("editpersonaladdress");
-		else
-			model = new ModelAndView("noaccess");
-		
-		return model;	
+		return principal.getName().equals(login) ? new ModelAndView("editpersonaladdress") : new ModelAndView("noaccess");
 	}
 	
 	//syntax error in clientDAOImpl - changeAddress is commented
 	//validation works
 	@RequestMapping(value = "/user/edit/personal/address/{login}", method = RequestMethod.POST)
-	public String changeFirstNamePost(@Valid @ModelAttribute("address") Address address, BindingResult result, Principal principal) throws Exception{
+	public ModelAndView changeFirstNamePost(@Valid @ModelAttribute("address") Address address, BindingResult result, Principal principal) throws Exception{
 		if(result.hasErrors()) {
-			return "editpersonaladdress";
+			return new ModelAndView("editpersonaladdress");
 		}
 		clientService.changeAddress(principal.getName(), address);
-		return "redirect:/thanks";
+		return new ModelAndView("redirect:/thanks");
 	}
 	
 }
